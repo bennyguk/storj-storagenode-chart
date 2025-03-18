@@ -40,16 +40,16 @@ spec:
               value: "true"
           ports:
             - name: storagenode
-              containerPort: {{ .Values.service.storagenode.port }}
+              containerPort: 28967
               protocol: TCP
             {{- if .Values.service.stats.enabled }}
             - name: stats
-              containerPort:  {{ .Values.service.stats.port }}
+              containerPort: 14002
               protocol: TCP
             {{- end }}
             {{- if .Values.service.quic.enabled }}
             - name: quic
-              containerPort: {{ .Values.service.quic.port }}
+              containerPort: 28967
               protocol: UDP
             {{- end }}
           livenessProbe:
