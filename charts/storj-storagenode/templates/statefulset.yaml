@@ -35,6 +35,9 @@ spec:
           image: "{{ .image.repository }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           {{- end }}
+          env:
+            - name: SETUP
+              value: "true"
           ports:
             - name: storagenode
               containerPort: {{ .Values.service.storagenode.port }}
