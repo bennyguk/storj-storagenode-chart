@@ -1,17 +1,60 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: temp-env-var
+  name: job-hook-preinstall
+  annotations:
+    "helm.sh/hook": "pre-install"
+
 spec:
   template:
-    metadata:
-      name: hook-job
-      annotations:
-        "helm.sh/hook": post-install
-        "helm.sh/hook-delete-policy": hook-succeeded
     spec:
       containers:
-        env:
-          - name: SETUP
-            value: "true"
+        - name: pre-install
+          image: "{{ .image.repository }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          volumeMounts:
+            - name: {{ include "storj-storagenode.fullname" . }}
+              mountPath: /app/config
+            - name: storj-identity
+              mountPath: /app/identity
+          env:
+            - name: SETUP
+              value: "true"
+          volumes:
+            - name: storj-identity
+              secret:
+              secretName: {{ required "External secret identity" .Values.identity.externalSecret.secretName }}
+            {{- if not .Values.persistence.enabled }}
+            - name: {{ include "storj-storagenode.fullname" . }}
+              emptyDir: {}
+            {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumeClaimTemplates:
+      - metadata:
+          name: {{ include "storj-storagenode.fullname" . }}
+        {{- with .Values.persistence  }}
+          annotations:
+    {{ toYaml .annotations | indent 8 }}
+        spec:
+    {{ toYaml .volumeClaimTemplate | indent 6 }}
+        {{- end }}
+      {{- end }}
+
       restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 0
+
+  backoffLimit: 3
+  completions: 1
+  Parallelism: 1
