@@ -10,6 +10,9 @@ spec:
     spec:
       containers:
         - name: pre-install
+          {{- with .Values.storagenode }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           volumeMounts:
