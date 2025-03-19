@@ -55,9 +55,3 @@ spec:
         {{- end }}
       {{- end }}
 
-      restartPolicy: OnFailure
-      terminationGracePeriodSeconds: 0
-
-  backoffLimit: 3
-  completions: 1
-  Parallelism: 1
