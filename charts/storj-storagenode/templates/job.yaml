@@ -15,6 +15,7 @@ spec:
             {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}"
           imagePullPolicy: {{ .image.pullPolicy }}
+          {{- end }}
           volumeMounts:
             - name: {{ include "storj-storagenode.fullname" . }}
               mountPath: /app/config
@@ -54,4 +55,3 @@ spec:
     {{ toYaml .volumeClaimTemplate | indent 6 }}
         {{- end }}
       {{- end }}
-
