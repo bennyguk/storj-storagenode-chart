@@ -23,6 +23,10 @@ spec:
           env:
             - name: SETUP
               value: "true"
+      volumes:
+        - name: {{ include "storj-storagenode.fullname" . }}
+          emptyDir: {}
+        {{- end }}        
       {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
