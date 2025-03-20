@@ -4,7 +4,6 @@ metadata:
   name: job-hook-preinstall
   annotations:
     "helm.sh/hook": "pre-install"
-    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
     spec:
