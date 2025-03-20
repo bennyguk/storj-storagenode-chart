@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-hook-preinstall
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: pre-install
+          {{- with .Values.storagenode }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          {{- end }}
+          volumeMounts:
+            - name: {{ include "storj-storagenode.fullname" . }}
+              mountPath: /app/config
+            - name: storj-identity
+              mountPath: /app/identity
+          env:
+            - name: SETUP
+              value: "true"
+          volumes:
+            - name: storj-identity
+              secret:
+              secretName: {{ required "External secret identity" .Values.identity.externalSecret.secretName }}
+            {{- if not .Values.persistence.enabled }}
+            - name: {{ include "storj-storagenode.fullname" . }}
+              emptyDir: {}
+            {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumeClaimTemplates:
+      - metadata:
+          name: {{ include "storj-storagenode.fullname" . }}
+        {{- with .Values.persistence  }}
+          annotations:
+    {{ toYaml .annotations | indent 8 }}
+        spec:
+    {{ toYaml .volumeClaimTemplate | indent 6 }}
+        {{- end }}
+      {{- end }}
