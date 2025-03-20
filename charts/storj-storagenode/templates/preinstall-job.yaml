@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-hook-preinstall
+  annotations:
+    "helm.sh/hook": "pre-install"
+
+spec:
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+        - name: pre-install
+          {{- with .Values.storagenode }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          {{- end }}
+          volumeMounts:
+            - name: {{ include "storj-storagenode.fullname" . }}
+              mountPath: /app/config
+          env:
+            - name: SETUP
+              value: "true"
+      {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ include "storj-storagenode.fullname" . }}
+    {{- with .Values.persistence  }}
+      annotations:
+{{ toYaml .annotations | indent 8 }}
+    spec:
+{{ toYaml .volumeClaimTemplate | indent 6 }}
+    {{- end }}
+  {{- end }}
