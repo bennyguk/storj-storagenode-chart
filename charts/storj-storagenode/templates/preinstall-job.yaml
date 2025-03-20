@@ -25,8 +25,7 @@ spec:
               value: "true"
       volumes:
         - name: {{ include "storj-storagenode.fullname" . }}
-          emptyDir: {}
-        {{- end }}        
+          emptyDir: {} 
       {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
