@@ -25,11 +25,25 @@ spec:
             - name: SETUP
               value: "true"
       volumes:
-        - name: {{ include "storj-storagenode.fullname" . }}
-          emptyDir: {} 
         - name: storj-identity
           secret:
             secretName: {{ required "External secret identity" .Values.identity.externalSecret.secretName }}
+        {{- if not .Values.persistence.enabled }}
+        - name: {{ include "storj-storagenode.fullname" . }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
