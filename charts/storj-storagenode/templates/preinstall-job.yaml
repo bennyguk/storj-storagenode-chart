@@ -20,12 +20,17 @@ spec:
           volumeMounts:
             - name: {{ include "storj-storagenode.fullname" . }}
               mountPath: /app/config
+            - name: storj-identity
+              mountPath: /app/identity
           env:
             - name: SETUP
               value: "true"
       volumes:
         - name: {{ include "storj-storagenode.fullname" . }}
           emptyDir: {} 
+        - name: storj-identity
+          secret:
+            secretName: {{ required "External secret identity" .Values.identity.externalSecret.secretName }}
       {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
