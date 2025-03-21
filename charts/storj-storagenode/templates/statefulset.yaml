@@ -27,7 +27,7 @@ spec:
       serviceAccountName: {{ include "storj-storagenode.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      containers:
+      initcontainers:
         - name: init-storj-setup
           {{- with .Values.storagenode }}
           securityContext:
@@ -43,6 +43,7 @@ spec:
           env:
             - name: SETUP
               value: "true"
+      containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.storagenode }}
           securityContext:
