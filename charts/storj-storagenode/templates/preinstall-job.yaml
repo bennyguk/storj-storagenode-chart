@@ -9,9 +9,6 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   serviceName: {{ include "storj-storagenode.fullname" . }}
-  selector:
-    matchLabels:
-      {{- include "storj-storagenode.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
