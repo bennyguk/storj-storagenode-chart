@@ -4,8 +4,23 @@ metadata:
   name: job-hook-preinstall
   annotations:
     "helm.sh/hook": "pre-install"
+  labels:
+    {{- include "storj-storagenode.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "storj-storagenode.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "storj-storagenode.selectorLabels" . | nindent 6 }}
   template:
+    metadata:
+      labels:
+        {{- include "storj-storagenode.selectorLabels" . | nindent 8 }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       restartPolicy: "OnFailure"
       containers:
