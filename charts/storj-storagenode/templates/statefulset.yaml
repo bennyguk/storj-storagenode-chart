@@ -72,6 +72,7 @@ spec:
           readinessProbe:
             tcpSocket:
               port: storagenode
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "storj-storagenode.fullname" . }}
@@ -82,7 +83,6 @@ spec:
               mountPath: /app/config
             - name: storj-identity
               mountPath: /app/identity
-          {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
         - name: storj-exporter
