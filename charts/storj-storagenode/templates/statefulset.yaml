@@ -54,25 +54,25 @@ spec:
           {{- with .Values.service }}
           ports:
             - name: storagenode
-              containerPort: {{- .storagenode.port }}
+              containerPort: {{ .storagenode.port }}
               protocol: TCP
             {{- if .stats.enabled }}
             - name: stats
-              containerPort: {{- .stats.port }}
+              containerPort: {{ .stats.port }}
               protocol: TCP
             {{- end }}
             {{- if .quic.enabled }}
             - name: quic
-              containerPort: {{- .quic.port }}
+              containerPort: {{ .quic.port }}
               protocol: UDP
             {{- end }}
+          {{- end }}
           livenessProbe:
             tcpSocket:
               port: storagenode
           readinessProbe:
             tcpSocket:
               port: storagenode
-            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "storj-storagenode.fullname" . }}
@@ -92,7 +92,7 @@ spec:
           imagePullPolicy: {{ .image.pullPolicy }}
           ports:
             - name: storj-exporter
-              containerPort: {{- .port }}
+              containerPort: {{ .port }}
               protocol: TCP
           env:
             - name: STORJ_HOST_ADDRESS
