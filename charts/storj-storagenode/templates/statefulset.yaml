@@ -51,18 +51,19 @@ spec:
           image: "{{ .image.repository }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           {{- end }}
+          {{- with .Values.service }}
           ports:
             - name: storagenode
-              containerPort: 28967
+              containerPort: {{- .storagenode.port }}
               protocol: TCP
-            {{- if .Values.service.stats.enabled }}
+            {{- if .stats.enabled }}
             - name: stats
-              containerPort: 14002
+              containerPort: {{- .stats.port }}
               protocol: TCP
             {{- end }}
-            {{- if .Values.service.quic.enabled }}
+            {{- if .quic.enabled }}
             - name: quic
-              containerPort: 28967
+              containerPort: {{- .quic.port }}
               protocol: UDP
             {{- end }}
           livenessProbe:
@@ -81,6 +82,7 @@ spec:
               mountPath: /app/config
             - name: storj-identity
               mountPath: /app/identity
+          {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
         - name: storj-exporter
@@ -90,7 +92,7 @@ spec:
           imagePullPolicy: {{ .image.pullPolicy }}
           ports:
             - name: storj-exporter
-              containerPort: 9651
+              containerPort: {{- .port }}
               protocol: TCP
           env:
             - name: STORJ_HOST_ADDRESS

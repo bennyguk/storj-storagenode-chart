@@ -14,14 +14,16 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
 podAnnotation: {}
 
 imagePullSecrets: {}
 
-podAnnotations: {}
+podAnnotations:
+  {}
   # prometheus.io/scrape: "true"
   # prometheus.io/port: "9651"
 
@@ -30,7 +32,8 @@ storagenode:
     repository: storjlabs/storagenode:latest
     pullPolicy: Always
 
-  securityContext: {}
+  securityContext:
+    {}
     # capabilities:
     #   drop:
     #   - ALL
@@ -38,7 +41,8 @@ storagenode:
     # runAsNonRoot: true
     # runAsUser: 1000
 
-  resources: {}
+  resources:
+    {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -52,6 +56,7 @@ storagenode:
 
 metrics:
   enabled: true
+  port: 9651
   image:
     repository: anclrii/storj-exporter:1.0.10
     pullPolicy: IfNotPresent
@@ -61,7 +66,8 @@ metrics:
 
 service:
   storagenode:
-    annotations: {}
+    annotations:
+      {}
       # prometheus.io/scrape: "true"
       # prometheus.io/port: "9651"
     type: NodePort
@@ -81,11 +87,11 @@ service:
     protocol: UDP
     nodePort: ""
 
-
 # Ingress is used to expose the dashboard
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -121,5 +127,6 @@ config:
   storage: "1TB"
 
 identity:
-  externalSecret: {}
+  externalSecret:
+    {}
     # secretName: "storagenode-identity"
