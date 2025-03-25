@@ -27,7 +27,7 @@ spec:
       serviceAccountName: {{ include "storj-storagenode.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      initContainers:
+      ephemeralContainers:
         - name: init-storj-setup
           {{- with .Values.storagenode }}
           securityContext:
