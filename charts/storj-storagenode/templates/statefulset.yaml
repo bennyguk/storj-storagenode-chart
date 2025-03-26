@@ -29,6 +29,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       ephemeralContainers:
         - name: init-storj-setup
+          targetContainerName: {{ .Chart.Name }}
           {{- with .Values.storagenode }}
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
