@@ -89,7 +89,7 @@ spec:
           env:
             {{- with .Values.storagenode }}
             - name: SNO_RUN_PARAMS
-              value: {{ $loggingLevel := print "log.level=" .loggingLevel }}{{ $loggingLevel }}
+              value: {{ $loggingLevel := print "--log.level=" .loggingLevel }}{{ $loggingLevel }}
             {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
