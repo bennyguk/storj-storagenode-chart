@@ -45,7 +45,7 @@ spec:
             - name: SETUP
               value: "true"
           command: ["/bin/sh","-c"]
-          args: ["exit 0"]
+          args: ["/entrypoint"; exit 0"]
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.storagenode }}
