@@ -28,10 +28,14 @@ podAnnotations:
   # prometheus.io/port: "9651"
 
 storagenode:
+  # Sets the logging level for the storagenode process.
   loggingLevel: INFO
   image:
     repository: storjlabs/storagenode:latest
     pullPolicy: Always
+  # Sets the logging level for the storagenode process.
+  updater:
+    loggingLevel: INFO
 
   securityContext:
     {}
