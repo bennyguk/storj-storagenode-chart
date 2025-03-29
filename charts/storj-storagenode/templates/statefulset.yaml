@@ -86,6 +86,10 @@ spec:
               mountPath: /app/config
             - name: storj-identity
               mountPath: /app/identity
+          env:
+            {{- with .Values.storagenode }}
+            - name: RUN_PARAMS
+              value: {{ $loggingLevel := print "log.level=".logginglevel }}{{ $loggingLevel }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
         - name: storj-exporter

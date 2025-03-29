@@ -28,6 +28,7 @@ podAnnotations:
   # prometheus.io/port: "9651"
 
 storagenode:
+  loggingLevel: INFO
   image:
     repository: storjlabs/storagenode:latest
     pullPolicy: Always
@@ -58,7 +59,7 @@ metrics:
   enabled: true
   port: 9651
   image:
-    repository: anclrii/storj-exporter:1.0.10
+    repository: anclrii/storj-exporter:latest
     pullPolicy: IfNotPresent
 
   securityContext: {}
