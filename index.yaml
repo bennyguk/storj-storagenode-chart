@@ -3,6 +3,19 @@ entries:
   storj-storagenode:
   - apiVersion: v2
     appVersion: 1.14.7
+    created: "2025-03-29T15:45:00.658970988Z"
+    description: A Helm chart for the storagenode STORJ
+    digest: e984c629b46e3c7ee1aab91c27777b6ef3c00d0570c86491c3ccaf5879aa28e0
+    maintainers:
+    - email: benny_guk@hotmail.com
+      name: bennyguk
+    name: storj-storagenode
+    type: application
+    urls:
+    - https://github.com/bennyguk/storj-storagenode-chart/releases/download/storj-storagenode-0.6.0/storj-storagenode-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: 1.14.7
     created: "2025-03-29T15:34:30.452542088Z"
     description: A Helm chart for the storagenode STORJ
     digest: ed7d590675bd7b7207b3a9b600430fed7e3d3dc1293071d2933686e6323514be
