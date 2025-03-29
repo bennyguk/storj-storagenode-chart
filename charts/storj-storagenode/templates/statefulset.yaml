@@ -89,7 +89,8 @@ spec:
           env:
             {{- with .Values.storagenode }}
             - name: RUN_PARAMS
-              value: {{ $loggingLevel := print "log.level=".logginglevel }}{{ $loggingLevel }}
+              value: {{ $loggingLevel := print "log.level=" .logginglevel }}{{ $loggingLevel }}
+            {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
         - name: storj-exporter
