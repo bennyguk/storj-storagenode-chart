@@ -27,7 +27,7 @@ spec:
       serviceAccountName: {{ include "storj-storagenode.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      ephemeralContainers:
+      initContainers:
         - name: init-storj-setup
           targetContainerName: {{ .Chart.Name }}
           {{- with .Values.storagenode }}
@@ -44,6 +44,8 @@ spec:
           env:
             - name: SETUP
               value: "true"
+          command: ["/bin/sh","-c"]
+          args: ["exit 0"]
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.storagenode }}
