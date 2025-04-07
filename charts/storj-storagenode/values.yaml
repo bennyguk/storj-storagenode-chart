@@ -33,7 +33,7 @@ storagenode:
   image:
     repository: storjlabs/storagenode:latest
     pullPolicy: Always
-  # Sets the logging level for the storagenode process.
+  # Sets the logging level for the storagenode-updater process.
   updater:
     loggingLevel: INFO
 
