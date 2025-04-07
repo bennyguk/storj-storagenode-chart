@@ -57,16 +57,16 @@ spec:
           {{- with .Values.service }}
           ports:
             - name: storagenode
-              containerPort: 28967 #{{ .storagenode.port }}
+              containerPort: {{ .storagenode.port }}
               protocol: TCP
             {{- if .stats.enabled }}
             - name: stats
-              containerPort: 14002 #{{ .stats.port }}
+              containerPort: {{ .stats.port }}
               protocol: TCP
             {{- end }}
             {{- if .quic.enabled }}
             - name: quic
-              containerPort: 28967 #{{ .quic.port }}
+              containerPort: {{ .quic.port }}
               protocol: UDP
             {{- end }}
           {{- end }}
