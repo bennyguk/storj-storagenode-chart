@@ -88,12 +88,8 @@ spec:
               mountPath: /app/identity
           env:
             {{- with .Values.storagenode }}
-            - name: SNO_RUN_PARAMS
-              value: {{ $loggingLevel := print "--log.level=" .loggingLevel }}{{ $loggingLevel }}
-            {{- end }}
-            {{- with .Values.storagenode.updater }}
-            - name: RUN_PARAMS
-              value: {{ $loggingLevel := print "--log.level=" .loggingLevel }}{{ $loggingLevel }}
+            - name: LOG_LEVEL
+              value: {{ .loggingLevel }}
             {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
