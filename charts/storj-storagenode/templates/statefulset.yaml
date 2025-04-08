@@ -91,6 +91,10 @@ spec:
             - name: LOG_LEVEL
               value: {{ .loggingLevel }}
             {{- end }}
+            {{- with .Values.storagenode.updater }}
+            - name: RUN_PARAMS
+              value: {{ $loggingLevel := print "--log.level=" .loggingLevel }}{{ $loggingLevel }}
+            {{- end }}
         {{- if .Values.metrics.enabled }}
         {{- with .Values.metrics }}
         - name: storj-exporter
