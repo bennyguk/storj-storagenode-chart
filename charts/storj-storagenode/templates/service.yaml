@@ -1,39 +1,79 @@
 {{- $fullName := include "storj-storagenode.fullname" . -}}
 {{- $labels := include "storj-storagenode.labels" . -}}
 {{- $selectorLabels := include "storj-storagenode.selectorLabels" . -}}
-{{- range $name, $service := .Values.service -}}
-  {{- if $service.enabled | default "true" -}}
+{{- with .Values.service }}
 ---  
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $fullName }}-{{ $name }}
+  name: {{ $fullName }}-storagenode
   labels:
     {{- $labels | nindent 4 }}
   annotations:
-    {{- with $service.annotations }}
+    {{- with .storagenode.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- with $service }}
+  {{- with .storagenode }}
   type: {{ .type }}
   {{ if .loadBalancerIP }}loadBalancerIP: {{ .loadBalancerIP }}{{ end }}
   ports:
     - port: {{ .port }}
-      targetPort: {{ $name }}
-      {{- if .protocol }}
-      {{- if or ( eq .protocol "HTTP" ) ( eq .protocol "HTTPS" ) ( eq .protocol "TCP" ) }}
+      targetPort: storagenode
       protocol: TCP
-      {{- else }}
-      protocol: {{ .protocol }}
-      {{- end }}
-      {{- else }}
-      protocol: TCP
-      {{- end }}
-      name: {{ $name }}
+      name: storagenode
       {{ if .nodePort }}nodePort: {{ .nodePort }}{{ end }}
   {{- end }}
   selector:
     {{- $selectorLabels | nindent 4 }}
+{{- if .stats.enabled | default "true" -}}
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-stats
+  labels:
+    {{- $labels | nindent 4 }}
+  annotations:
+    {{- with .stats.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- with .stats }}
+  type: {{ .type }}
+  {{ if .loadBalancerIP }}loadBalancerIP: {{ .loadBalancerIP }}{{ end }}
+  ports:
+    - port: {{ .port }}
+      targetPort: stats
+      protocol: TCP
+      name: stats
+      {{ if .nodePort }}nodePort: {{ .nodePort }}{{ end }}
   {{- end }}
+  selector:
+    {{- $selectorLabels | nindent 4 }}
+{{ end }}
+{{- if .quic.enabled | default "true" -}}
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-quic
+  labels:
+    {{- $labels | nindent 4 }}
+  annotations:
+    {{- with .quic.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .quic.type }}
+  {{ if .quic.loadBalancerIP }}loadBalancerIP: {{ .quic.loadBalancerIP }}{{ end }}
+  ports:
+    - port: {{ .storagenode.port }}
+      targetPort: quic
+      protocol: UDP
+      name: quic
+      {{ if .quic.nodePort }}nodePort: {{ .quic.nodePort }}{{ end }}
+  {{- end }}
+  selector:
+    {{- $selectorLabels | nindent 4 }}
 {{ end }}

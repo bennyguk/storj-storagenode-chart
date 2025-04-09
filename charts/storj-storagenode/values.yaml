@@ -80,15 +80,16 @@ service:
     port: 28967
     nodePort: ""
   stats:
+    annotations: {}
     enabled: true
     type: ClusterIP
     port: 14002
     nodePort: ""
   quic:
+    annotations: {}
     enabled: true
     type: NodePort
     loadBalancerIP:
-    port: 28967
     protocol: UDP
     nodePort: ""
 
