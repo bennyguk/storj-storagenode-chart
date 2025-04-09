@@ -44,6 +44,10 @@ spec:
           env:
             - name: SETUP
               value: "true"
+            {{- with .Values.service.storagenode }}
+            - name: SNO_RUN_PARAMS
+              value: {{ $publicPort := print "--server.address=:" .port }}{{ $publicPort }}
+            {{- end }}
           command: ["/bin/sh","-c"]
           args: ["/entrypoint; exit 0"]
       containers:
@@ -90,10 +94,6 @@ spec:
             {{- with .Values.storagenode }}
             - name: LOG_LEVEL
               value: {{ .loggingLevel }}
-            {{- end }}
-            {{- with .Values.service.storagenode }}
-            - name: SNO_RUN_PARAMS
-              value: {{ $publicPort := print "--server.address=172.0.0.1:" .port }}{{ $publicPort }}
             {{- end }}
             {{- with .Values.storagenode.updater }}
             - name: RUN_PARAMS
