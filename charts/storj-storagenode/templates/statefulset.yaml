@@ -93,7 +93,7 @@ spec:
             {{- end }}
             {{- with .Values.service.storagenode }}
             - name: SNO_RUN_PARAMS
-              value: {{ $publicPort := print "--public.address=:" .port }}{{ $publicPort }}
+              value: {{ $publicPort := print "--server.address=:" .port }}{{ $publicPort }}
             {{- end }}
             {{- with .Values.storagenode.updater }}
             - name: RUN_PARAMS
