@@ -90,6 +90,8 @@ spec:
             {{- with .Values.storagenode }}
             - name: LOG_LEVEL
               value: {{ .loggingLevel }}
+            {{- end }}
+            {{- with .Values.service.storagenode }}
             - name: SNO_RUN_PARAMS
               value: {{ $publicPort := print "--public.address=:" .port }}{{ $publicPort }}
             {{- end }}
