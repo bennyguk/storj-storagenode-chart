@@ -44,10 +44,6 @@ spec:
           env:
             - name: SETUP
               value: "true"
-            {{- with .Values.service.storagenode }}
-            - name: SNO_RUN_PARAMS
-              value: {{ $publicPort := print "--server.address=:" .port }}{{ $publicPort }}
-            {{- end }}
           command: ["/bin/sh","-c"]
           args: ["/entrypoint; exit 0"]
       containers:
@@ -61,16 +57,16 @@ spec:
           {{- with .Values.service }}
           ports:
             - name: storagenode
-              containerPort: {{ .storagenode.port }}
+              containerPort: 28967
               protocol: TCP
             {{- if .stats.enabled }}
             - name: stats
-              containerPort: {{ .stats.port }}
+              containerPort: 14002
               protocol: TCP
             {{- end }}
             {{- if .quic.enabled }}
             - name: quic
-              containerPort: {{ .storagenode.port }}
+              containerPort: 28967
               protocol: UDP
             {{- end }}
           {{- end }}
