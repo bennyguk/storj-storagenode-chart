@@ -51,7 +51,6 @@ spec:
   {{- end }}
   selector:
     {{- $selectorLabels | nindent 4 }}
-{{ end }}
 {{- if .quic.enabled | default "true" -}}
 ---  
 apiVersion: v1
@@ -77,3 +76,5 @@ spec:
   selector:
     {{- $selectorLabels | nindent 4 }}
 {{ end }}
+{{ end }}
+
