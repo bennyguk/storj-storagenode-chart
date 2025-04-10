@@ -51,6 +51,7 @@ spec:
   {{- end }}
   selector:
     {{- $selectorLabels | nindent 4 }}
+{{- end }}
 {{- if .quic.enabled | default "true" -}}
 ---  
 apiVersion: v1
@@ -72,9 +73,7 @@ spec:
       protocol: UDP
       name: quic
       {{ if .quic.nodePort }}nodePort: {{ .quic.nodePort }}{{ end }}
-  {{- end }}
   selector:
     {{- $selectorLabels | nindent 4 }}
 {{ end }}
 {{ end }}
-
