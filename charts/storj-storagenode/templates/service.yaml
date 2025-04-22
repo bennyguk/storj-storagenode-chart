@@ -2,7 +2,6 @@
 {{- $labels := include "storj-storagenode.labels" . -}}
 {{- $selectorLabels := include "storj-storagenode.selectorLabels" . -}}
 {{- with .Values.service }}
----  
 apiVersion: v1
 kind: Service
 metadata:
@@ -39,7 +38,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- with .stats }}
+  {{- with .stats -}}
   type: {{ .type }}
   {{ if .loadBalancerIP }}loadBalancerIP: {{ .loadBalancerIP }}{{ end }}
   ports:
@@ -52,7 +51,7 @@ spec:
   selector:
     {{- $selectorLabels | nindent 4 }}
 {{- end }}
-{{- if .quic.enabled | default "true" -}}
+  {{- if .quic.enabled | default "true" -}}
 ---  
 apiVersion: v1
 kind: Service
@@ -65,7 +64,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  type: {{ .quic.type }}
+  type: {{ .quic.type -}}
   {{ if .quic.loadBalancerIP }}loadBalancerIP: {{ .quic.loadBalancerIP }}{{ end }}
   ports:
     - port: {{ .storagenode.port }}
@@ -75,5 +74,6 @@ spec:
       {{ if .quic.nodePort }}nodePort: {{ .quic.nodePort }}{{ end }}
   selector:
     {{- $selectorLabels | nindent 4 }}
-{{ end }}
-{{ end }}
+---
+{{- end }}
+{{- end }}
