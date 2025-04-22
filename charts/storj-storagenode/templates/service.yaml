@@ -25,7 +25,7 @@ spec:
   {{- end }}
   selector:
     {{- $selectorLabels | nindent 4 }}
-{{ if .stats.enabled | default "true" -}}
+{{ if .stats.enabled -}}
 ---
 apiVersion: v1
 kind: Service
@@ -51,7 +51,7 @@ spec:
   selector:
     {{- $selectorLabels | nindent 4 }}
 {{- end }}
-{{ if .quic.enabled | default "true" -}}
+{{ if .quic.enabled -}}
 ---
 apiVersion: v1
 kind: Service
